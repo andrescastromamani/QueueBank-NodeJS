@@ -24,5 +24,7 @@ socket.on('latest-ticket', (latest) => {
 })
 
 btnAttention.addEventListener('click', () => {
-
+    socket.emit('attend-ticket', { desktop }, (payload) => {
+        console.log(payload);
+    })
 });

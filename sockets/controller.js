@@ -8,6 +8,14 @@ const socketController = (socket) => {
         const next = ticketControl.next();
         callback(next);
     });
+    socket.on('attend-ticket', ({ desktop }, callback) => {
+        if (!desktop) {
+            return callback({
+                ok: false,
+                msg: "Desktop is required"
+            })
+        }
+    })
 }
 
 module.exports = {
