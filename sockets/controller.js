@@ -9,11 +9,24 @@ const socketController = (socket) => {
         callback(next);
     });
     socket.on('attend-ticket', ({ desktop }, callback) => {
+        console.log(desktop);
         if (!desktop) {
             return callback({
                 ok: false,
                 msg: "Desktop is required"
             })
+        }
+        const ticket = ticketControl.attendNext(desktop);
+        if (!ticket) {
+            callback({
+                ok: false,
+                msg: 'Not exist tickets'
+            });
+        } else {
+            callback({
+                ok: true,
+                ticket
+            });
         }
     })
 }
