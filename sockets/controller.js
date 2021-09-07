@@ -4,7 +4,7 @@ const ticketControl = new TicketControl();
 
 const socketController = (socket) => {
     socket.emit('latest-ticket', ticketControl.latest);
-    socket.emit('status-actual', ticketControl.latest);
+    socket.emit('status-actual', ticketControl.latestFour);
 
     socket.on('next-ticket', (payload, callback) => {
         const next = ticketControl.next();
@@ -19,7 +19,7 @@ const socketController = (socket) => {
             })
         }
         const ticket = ticketControl.attendNext(desktop);
-        socket.broadcast.emit('status-actual', ticketControl.latest);
+        socket.broadcast.emit('status-actual', ticketControl.latestFour);
 
         if (!ticket) {
             callback({
