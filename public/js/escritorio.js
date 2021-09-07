@@ -2,6 +2,7 @@ const lblDesktop = document.querySelector('h1');
 const btnAttention = document.querySelector('button');
 const lblTicket = document.querySelector('small');
 const lblAlert = document.querySelector('.alert');
+const lblPendientes = document.querySelector('#lblPendientes');
 
 
 const searchParams = new URLSearchParams(window.location.search);
@@ -24,16 +25,21 @@ socket.on('connect', () => {
 socket.on('disconnect', () => {
     btnAttention.disabled = true;
 });
-socket.on('latest-ticket', (latest) => {
-
+socket.on('pending-tickets', (pending) => {
+    if (pending === 0) {
+        lblPendientes.style.display = 'none'
+    } else {
+        lblPendientes.style.display = ''
+        lblPendientes.innerText = pending;
+    }
 })
 
 btnAttention.addEventListener('click', () => {
-    socket.emit('attend-ticket', { desktop }, ({ ok, ticket, msg}) => {
+    socket.emit('attend-ticket', { desktop }, ({ ok, ticket, msg }) => {
         if (!ok) {
             lblTicket.innerText = 'Empty'
             return lblAlert.style.display = '';
         }
-        lblTicket.innerText = 'T-'+ticket.number;
+        lblTicket.innerText = 'T-' + ticket.number;
     })
 });
